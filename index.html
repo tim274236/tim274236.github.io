@@ -416,7 +416,7 @@
             position: absolute;
             inset: 0;
             border-radius: 62% 38% 46% 54% / 58% 44% 56% 42%;
-            animation: blob-morph 22s ease-in-out infinite;
+            animation: blob-morph 30s linear infinite;
         }
 
         /* ── Layer 1: Teal chromatic halo ── */
@@ -511,15 +511,15 @@
             100% { transform: translate(calc(-50% - 950px), calc(-50% +  80px)) rotate(  0deg) scale(1.00); }
         }
 
-        /* ── Organic shape morph ── */
+        /* ── Morph: near-circle ↔ soft water-trapped bean ── */
         @keyframes blob-morph {
-            0%,100% { border-radius: 62% 38% 46% 54% / 58% 44% 56% 42%; }
-            14%     { border-radius: 42% 58% 56% 44% / 48% 66% 34% 52%; }
-            28%     { border-radius: 56% 44% 36% 64% / 46% 54% 46% 54%; }
-            42%     { border-radius: 36% 64% 64% 36% / 58% 36% 64% 42%; }
-            57%     { border-radius: 52% 48% 42% 58% / 64% 36% 52% 48%; }
-            71%     { border-radius: 44% 56% 58% 42% / 38% 60% 40% 62%; }
-            85%     { border-radius: 58% 42% 48% 52% / 52% 48% 58% 42%; }
+            0%   { border-radius: 54% 46% 52% 48% / 50% 52% 48% 50%; }
+            16%  { border-radius: 62% 38% 44% 56% / 56% 44% 58% 42%; }
+            33%  { border-radius: 50% 50% 50% 50% / 52% 50% 50% 48%; }
+            50%  { border-radius: 38% 62% 58% 42% / 44% 60% 40% 56%; }
+            66%  { border-radius: 52% 48% 46% 54% / 58% 46% 54% 42%; }
+            83%  { border-radius: 60% 40% 52% 48% / 48% 54% 46% 52%; }
+            100% { border-radius: 54% 46% 52% 48% / 50% 52% 48% 50%; }
         }
 
         /* ── Responsive ── */
