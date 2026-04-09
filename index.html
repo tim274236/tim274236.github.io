@@ -413,6 +413,153 @@
             100% { transform: translate( 50px,  30px); opacity: 0.0; }
         }
 
+        /* ══════════════════════════════════════════════════════
+           LIQUID GLASS BLOB
+           Large organic molten-glass globule that drifts
+           slowly across the background behind the grid.
+
+           Layers (bottom → top):
+             1. blob-ca-teal  — teal chromatic aberration halo
+             2. blob-ca-pink  — pink chromatic aberration halo
+             3. blob-body     — frosted glass (backdrop-filter)
+             4. blob-gloss    — specular upper-left highlight
+             5. blob-noise    — micro-imperfection texture overlay
+        ══════════════════════════════════════════════════════ */
+
+        .glass-blob {
+            position: fixed;
+            width: 580px;
+            height: 580px;
+            top: 50%;
+            left: 50%;
+            z-index: 1;
+            pointer-events: none;
+            animation: blob-float 30s cubic-bezier(0.37, 0, 0.63, 1) infinite;
+        }
+
+        /* All layers share the same morph shape */
+        .blob-ca-teal,
+        .blob-ca-pink,
+        .blob-body,
+        .blob-gloss,
+        .blob-noise {
+            position: absolute;
+            inset: 0;
+            border-radius: 62% 38% 46% 54% / 58% 44% 56% 42%;
+            animation: blob-morph 22s ease-in-out infinite;
+        }
+
+        /* ── Layer 1: Teal chromatic halo ── */
+        .blob-ca-teal {
+            inset: -10px;
+            transform: translate(5px, -4px);
+            background: transparent;
+            border-radius: 62% 38% 46% 54% / 58% 44% 56% 42%;
+            box-shadow:
+                0 0 0 2px  rgba(0, 215, 200, 0.50),
+                0 0 22px 5px rgba(0, 215, 200, 0.26),
+                0 0 55px 18px rgba(0, 215, 200, 0.12),
+                0 0 90px 35px rgba(0, 215, 200, 0.05);
+            filter: blur(1.8px);
+        }
+
+        /* ── Layer 2: Pink chromatic halo ── */
+        .blob-ca-pink {
+            inset: -10px;
+            transform: translate(-5px, 4px);
+            background: transparent;
+            border-radius: 62% 38% 46% 54% / 58% 44% 56% 42%;
+            box-shadow:
+                0 0 0 2px  rgba(255, 105, 180, 0.50),
+                0 0 22px 5px rgba(255, 105, 180, 0.26),
+                0 0 55px 18px rgba(255, 105, 180, 0.12),
+                0 0 90px 35px rgba(255, 105, 180, 0.05);
+            filter: blur(1.8px);
+        }
+
+        /* ── Layer 3: Frosted glass body ── */
+        .blob-body {
+            background: linear-gradient(
+                148deg,
+                rgba(255, 255, 255, 0.30)  0%,
+                rgba(205, 250, 240, 0.16) 28%,
+                rgba(245, 210, 232, 0.12) 58%,
+                rgba(225, 242, 255, 0.09) 100%
+            );
+            backdrop-filter: blur(26px) saturate(180%) brightness(1.07);
+            -webkit-backdrop-filter: blur(26px) saturate(180%) brightness(1.07);
+            /* Refractive rim: bright top/left, dim bottom/right */
+            border-top:    1.5px solid rgba(255, 255, 255, 0.70);
+            border-left:   1.5px solid rgba(255, 255, 255, 0.55);
+            border-right:  1.5px solid rgba(190, 230, 225, 0.22);
+            border-bottom: 1.5px solid rgba(220, 210, 230, 0.18);
+            box-shadow:
+                /* drop shadow */
+                0 12px 70px  rgba(0,   0,   0,   0.09),
+                0  4px 18px  rgba(0,   0,   0,   0.06),
+                /* inner top specular */
+                inset 0  3px 35px rgba(255, 255, 255, 0.32),
+                /* inner teal bounce */
+                inset 0 -3px 22px rgba(160, 235, 225, 0.14),
+                /* inner pink warmth */
+                inset 3px 0  18px rgba(255, 200, 220, 0.10);
+        }
+
+        /* ── Layer 4: Specular gloss — upper-left lobe ── */
+        .blob-gloss {
+            background: radial-gradient(
+                ellipse 52% 40% at 26% 22%,
+                rgba(255, 255, 255, 0.68)  0%,
+                rgba(255, 255, 255, 0.28) 36%,
+                rgba(215, 250, 245, 0.08) 62%,
+                transparent 78%
+            );
+        }
+
+        /* ── Layer 5: Noise / micro-imperfection overlay ── */
+        /* SVG data-URI fractal noise — adds glass texture feel */
+        .blob-noise {
+            opacity: 0.04;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            background-size: 200px 200px;
+            mix-blend-mode: overlay;
+        }
+
+        /* ── Drift: left-edge → center → right-edge → back ── */
+        @keyframes blob-float {
+            0%   {
+                transform: translate(calc(-50% - 400px), calc(-50% +  30px))
+                           rotate(  0deg) scale(1.00);
+            }
+            22%  {
+                transform: translate(calc(-50% - 100px), calc(-50% -  80px))
+                           rotate( 12deg) scale(1.06);
+            }
+            48%  {
+                transform: translate(calc(-50% + 200px), calc(-50% +  55px))
+                           rotate( -6deg) scale(0.94);
+            }
+            72%  {
+                transform: translate(calc(-50% + 360px), calc(-50% + 100px))
+                           rotate(-20deg) scale(1.03);
+            }
+            100% {
+                transform: translate(calc(-50% - 400px), calc(-50% +  30px))
+                           rotate(  0deg) scale(1.00);
+            }
+        }
+
+        /* ── Organic shape morph ── */
+        @keyframes blob-morph {
+            0%,100% { border-radius: 62% 38% 46% 54% / 58% 44% 56% 42%; }
+            14%     { border-radius: 42% 58% 56% 44% / 48% 66% 34% 52%; }
+            28%     { border-radius: 56% 44% 36% 64% / 46% 54% 46% 54%; }
+            42%     { border-radius: 36% 64% 64% 36% / 58% 36% 64% 42%; }
+            57%     { border-radius: 52% 48% 42% 58% / 64% 36% 52% 48%; }
+            71%     { border-radius: 44% 56% 58% 42% / 38% 60% 40% 62%; }
+            85%     { border-radius: 58% 42% 48% 52% / 52% 48% 58% 42%; }
+        }
+
         /* ── Responsive ── */
         @media (max-width: 768px) {
             .grid { grid-template-columns: repeat(2, 1fr); gap: 18px; }
@@ -434,6 +581,15 @@
 <body>
 
     <div class="bg"></div>
+
+    <!-- ═══ Liquid glass blob ═══ -->
+    <div class="glass-blob" aria-hidden="true">
+        <div class="blob-ca-teal"></div>
+        <div class="blob-ca-pink"></div>
+        <div class="blob-body"></div>
+        <div class="blob-gloss"></div>
+        <div class="blob-noise"></div>
+    </div>
 
     <!-- Corner decorative images -->
     <img class="corner-img corner-nba" src="nba-glass.png" alt="">
