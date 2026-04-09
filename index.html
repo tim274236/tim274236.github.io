@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tim Haddon's Projects</title>
+    <title>Tim Haddon</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
 
@@ -18,17 +18,17 @@
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             color: #fff;
             overflow-x: hidden;
-            background: #0a0a1a;
+            background: #08120f;
         }
 
-        /* Animated gradient background */
+        /* Animated gradient background — clear glass with ivy green & light blue hints */
         .bg {
             position: fixed;
             inset: 0;
             z-index: 0;
-            background: linear-gradient(135deg, #0a0a2e, #1a0a3e, #0a1a3e, #0a2a2e);
+            background: linear-gradient(135deg, #071410, #0a1f1a, #081820, #0b2018);
             background-size: 400% 400%;
-            animation: gradientShift 15s ease infinite;
+            animation: gradientShift 18s ease infinite;
         }
 
         @keyframes gradientShift {
@@ -37,42 +37,45 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* Floating orbs for depth */
+        /* Floating orbs */
         .orb {
             position: fixed;
             border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.3;
+            filter: blur(90px);
+            opacity: 0.25;
             z-index: 0;
-            animation: float 20s ease-in-out infinite;
+            animation: float 22s ease-in-out infinite;
         }
 
+        /* Ivy green orb — top left */
         .orb-1 {
-            width: 400px;
-            height: 400px;
-            background: #6366f1;
-            top: -100px;
-            right: -100px;
+            width: 480px;
+            height: 480px;
+            background: #2d7a52;
+            top: -120px;
+            left: -120px;
             animation-delay: 0s;
         }
 
+        /* Light blue orb — bottom right */
         .orb-2 {
-            width: 350px;
-            height: 350px;
-            background: #06b6d4;
-            bottom: -80px;
-            left: -80px;
-            animation-delay: -7s;
+            width: 420px;
+            height: 420px;
+            background: #38bdf8;
+            bottom: -100px;
+            right: -100px;
+            animation-delay: -8s;
         }
 
+        /* Subtle teal center orb */
         .orb-3 {
-            width: 300px;
-            height: 300px;
-            background: #8b5cf6;
+            width: 320px;
+            height: 320px;
+            background: #0ea5a0;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%);
-            animation-delay: -12s;
+            animation-delay: -14s;
+            animation-name: floatCenter;
         }
 
         @keyframes float {
@@ -81,14 +84,32 @@
             66%      { transform: translate(-20px, 20px) scale(0.95); }
         }
 
-        .orb-3 {
-            animation-name: floatCenter;
-        }
-
         @keyframes floatCenter {
             0%, 100% { transform: translate(-50%, -50%) scale(1); }
             33%      { transform: translate(-45%, -55%) scale(1.05); }
             66%      { transform: translate(-55%, -45%) scale(0.95); }
+        }
+
+        /* Corner decorative images */
+        .corner-img {
+            position: fixed;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.72;
+            filter: drop-shadow(0 0 32px rgba(45, 122, 82, 0.35));
+        }
+
+        .corner-nba {
+            top: 0;
+            left: 0;
+            width: 260px;
+        }
+
+        .corner-ivey {
+            bottom: 0;
+            right: 0;
+            width: 260px;
+            filter: drop-shadow(0 0 32px rgba(56, 189, 248, 0.35));
         }
 
         /* Content */
@@ -110,7 +131,7 @@
             font-weight: 700;
             letter-spacing: -0.02em;
             margin-bottom: 12px;
-            background: linear-gradient(135deg, #fff 0%, #c7d2fe 50%, #a5b4fc 100%);
+            background: linear-gradient(135deg, #e0f2f1 0%, #a7f3d0 45%, #7dd3fc 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -119,7 +140,7 @@
         header p {
             font-size: 1.1rem;
             font-weight: 300;
-            color: rgba(255, 255, 255, 0.6);
+            color: rgba(255, 255, 255, 0.55);
         }
 
         /* Project Grid */
@@ -129,13 +150,13 @@
             gap: 24px;
         }
 
-        /* Glass Card */
+        /* Glass Card — clear frosted glass */
         .card {
             aspect-ratio: 1;
-            background: rgba(255, 255, 255, 0.06);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(18px) saturate(160%);
+            -webkit-backdrop-filter: blur(18px) saturate(160%);
+            border: 1px solid rgba(255, 255, 255, 0.14);
             border-radius: 20px;
             padding: 32px;
             display: flex;
@@ -153,25 +174,20 @@
             position: absolute;
             inset: 0;
             border-radius: 20px;
-            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%);
+            background: linear-gradient(135deg, rgba(255,255,255,0.09) 0%, transparent 55%);
             opacity: 0;
             transition: opacity 0.35s ease;
         }
 
         .card:hover {
             transform: translateY(-8px);
-            border-color: rgba(255, 255, 255, 0.25);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3),
-                        0 0 40px rgba(99, 102, 241, 0.15);
+            border-color: rgba(255, 255, 255, 0.28);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35),
+                        0 0 40px rgba(45, 122, 82, 0.18);
         }
 
         .card:hover::before {
             opacity: 1;
-        }
-
-        .card-icon {
-            font-size: 2.4rem;
-            margin-bottom: 16px;
         }
 
         .card-title {
@@ -198,26 +214,26 @@
             font-weight: 500;
             padding: 4px 12px;
             border-radius: 20px;
-            background: rgba(99, 102, 241, 0.2);
-            border: 1px solid rgba(99, 102, 241, 0.3);
-            color: #a5b4fc;
+            background: rgba(14, 165, 160, 0.18);
+            border: 1px solid rgba(14, 165, 160, 0.3);
+            color: #5eead4;
         }
 
-        /* Live card accent */
+        /* Live card accent — ivy green */
         .card.live {
-            border-color: rgba(99, 102, 241, 0.3);
+            border-color: rgba(45, 122, 82, 0.35);
             cursor: pointer;
         }
 
         .card.live:hover {
-            border-color: rgba(99, 102, 241, 0.5);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3),
-                        0 0 40px rgba(99, 102, 241, 0.25);
+            border-color: rgba(45, 122, 82, 0.6);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35),
+                        0 0 40px rgba(45, 122, 82, 0.3);
         }
 
         .card.live .card-tag {
-            background: rgba(34, 197, 94, 0.2);
-            border-color: rgba(34, 197, 94, 0.3);
+            background: rgba(34, 197, 94, 0.18);
+            border-color: rgba(34, 197, 94, 0.32);
             color: #86efac;
         }
 
@@ -248,7 +264,7 @@
             opacity: 0;
             transform: translate(-4px, 4px);
             transition: all 0.35s ease;
-            color: rgba(255, 255, 255, 0.6);
+            color: rgba(255, 255, 255, 0.65);
         }
 
         .card.live:hover .arrow {
@@ -275,12 +291,13 @@
                 padding: 24px;
             }
 
-            .card-icon {
-                font-size: 2rem;
-            }
-
             .card-title {
                 font-size: 1.1rem;
+            }
+
+            .corner-nba,
+            .corner-ivey {
+                width: 160px;
             }
         }
 
@@ -298,6 +315,11 @@
             header h1 {
                 font-size: 1.6rem;
             }
+
+            .corner-nba,
+            .corner-ivey {
+                width: 110px;
+            }
         }
     </style>
 </head>
@@ -307,19 +329,34 @@
     <div class="orb orb-2"></div>
     <div class="orb orb-3"></div>
 
+    <!-- Corner decorative images -->
+    <img class="corner-img corner-nba" src="nba-glass.png" alt="">
+    <img class="corner-img corner-ivey" src="ivey-glass.png" alt="">
+
     <div class="container">
         <header>
-            <h1>Tim Haddon's Projects</h1>
-            <p>A collection of things I'm building</p>
+            <h1>Tim Haddon</h1>
+            <p>Building interactive data experiences and analytics tools</p>
         </header>
 
         <div class="grid">
             <!-- Live Project -->
             <a class="card live" href="https://tim274236.github.io/Tim_NBA_stats_project/" target="_blank" rel="noopener">
                 <div>
-                    <div class="card-icon">🏀</div>
                     <div class="card-title">NBA Shot Chart Explorer</div>
                     <div class="card-desc">Interactive basketball shot chart analytics with player comparisons, team analysis, and hex-map visualizations.</div>
+                </div>
+                <div class="card-footer">
+                    <span class="card-tag">Live</span>
+                </div>
+                <span class="arrow">↗</span>
+            </a>
+
+            <!-- Jarvis AI Assistant -->
+            <a class="card live" href="https://tim274236.github.io/jarvis-project/" target="_blank" rel="noopener">
+                <div>
+                    <div class="card-title">Jarvis AI Assistant</div>
+                    <div class="card-desc">Voice-activated AI assistant built with Python and the Claude API. Natural conversation with intelligent task automation.</div>
                 </div>
                 <div class="card-footer">
                     <span class="card-tag">Live</span>
@@ -330,7 +367,6 @@
             <!-- Placeholder Cards -->
             <div class="card placeholder">
                 <div>
-                    <div class="card-icon">🤖</div>
                     <div class="card-title">Coming Soon</div>
                     <div class="card-desc">Next project in the works. Stay tuned.</div>
                 </div>
@@ -341,7 +377,6 @@
 
             <div class="card placeholder">
                 <div>
-                    <div class="card-icon">📊</div>
                     <div class="card-title">Coming Soon</div>
                     <div class="card-desc">Something new is being built here.</div>
                 </div>
@@ -352,7 +387,6 @@
 
             <div class="card placeholder">
                 <div>
-                    <div class="card-icon">🛠️</div>
                     <div class="card-title">Coming Soon</div>
                     <div class="card-desc">Another project on the horizon.</div>
                 </div>
@@ -363,7 +397,6 @@
 
             <div class="card placeholder">
                 <div>
-                    <div class="card-icon">🧪</div>
                     <div class="card-title">Coming Soon</div>
                     <div class="card-desc">More ideas taking shape.</div>
                 </div>
