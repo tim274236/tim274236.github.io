@@ -404,7 +404,7 @@
             left: 50%;
             z-index: 1;
             pointer-events: none;
-            animation: blob-float 30s cubic-bezier(0.37, 0, 0.63, 1) infinite;
+            animation: blob-float 55s linear infinite;
         }
 
         /* All layers share the same morph shape */
@@ -495,36 +495,20 @@
             mix-blend-mode: overlay;
         }
 
-        /* ── Drift: unconstrained — roams freely beyond all edges ── */
+        /* ── Drift: fully off-screen, constant fluid pace, no stops ── */
         @keyframes blob-float {
-            0%   {
-                transform: translate(calc(-50% - 820px), calc(-50% + 120px))
-                           rotate(  0deg) scale(1.00);
-            }
-            18%  {
-                transform: translate(calc(-50% - 260px), calc(-50% - 340px))
-                           rotate( 18deg) scale(1.07);
-            }
-            38%  {
-                transform: translate(calc(-50% + 180px), calc(-50% +  60px))
-                           rotate( -5deg) scale(0.93);
-            }
-            55%  {
-                transform: translate(calc(-50% + 700px), calc(-50% - 180px))
-                           rotate(-22deg) scale(1.04);
-            }
-            72%  {
-                transform: translate(calc(-50% + 420px), calc(-50% + 420px))
-                           rotate(-14deg) scale(0.96);
-            }
-            88%  {
-                transform: translate(calc(-50% - 500px), calc(-50% + 280px))
-                           rotate( 10deg) scale(1.02);
-            }
-            100% {
-                transform: translate(calc(-50% - 820px), calc(-50% + 120px))
-                           rotate(  0deg) scale(1.00);
-            }
+            0%   { transform: translate(calc(-50% - 950px), calc(-50% +  80px)) rotate(  0deg) scale(1.00); }
+            9%   { transform: translate(calc(-50% - 620px), calc(-50% - 520px)) rotate(  8deg) scale(1.03); }
+            18%  { transform: translate(calc(-50% - 120px), calc(-50% - 680px)) rotate( 18deg) scale(1.06); }
+            27%  { transform: translate(calc(-50% + 340px), calc(-50% - 480px)) rotate( 25deg) scale(1.02); }
+            36%  { transform: translate(calc(-50% + 780px), calc(-50% - 160px)) rotate( 16deg) scale(0.97); }
+            45%  { transform: translate(calc(-50% + 920px), calc(-50% + 320px)) rotate(  4deg) scale(0.94); }
+            54%  { transform: translate(calc(-50% + 640px), calc(-50% + 680px)) rotate( -8deg) scale(0.97); }
+            63%  { transform: translate(calc(-50% + 140px), calc(-50% + 820px)) rotate(-18deg) scale(1.01); }
+            72%  { transform: translate(calc(-50% - 380px), calc(-50% + 700px)) rotate(-24deg) scale(1.04); }
+            81%  { transform: translate(calc(-50% - 800px), calc(-50% + 420px)) rotate(-14deg) scale(1.02); }
+            90%  { transform: translate(calc(-50% - 960px), calc(-50% - 100px)) rotate( -5deg) scale(0.99); }
+            100% { transform: translate(calc(-50% - 950px), calc(-50% +  80px)) rotate(  0deg) scale(1.00); }
         }
 
         /* ── Organic shape morph ── */
