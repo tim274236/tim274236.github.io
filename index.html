@@ -357,28 +357,28 @@
            Uses CSS :has() — no JS needed.
         ══════════════════════════════════════════ */
 
-        /* Elements that should blur out when NBA card is hovered */
+        /* Elements that blur out when any card is hovered */
         .bg,
         .glass-blob,
         .corner-ivey,
         header,
-        .grid .card:not(#nba-card) {
+        .grid .card {
             transition: filter 0.2s ease, opacity 0.2s ease;
         }
 
-        body:has(#nba-card:hover) .bg,
-        body:has(#nba-card:hover) .glass-blob,
-        body:has(#nba-card:hover) .corner-ivey {
+        body:has(.card:hover) .bg,
+        body:has(.card:hover) .glass-blob,
+        body:has(.card:hover) .corner-ivey {
             filter: blur(10px);
             opacity: 0.75;
         }
 
-        body:has(#nba-card:hover) header {
+        body:has(.card:hover) header {
             filter: blur(6px);
             opacity: 0.6;
         }
 
-        body:has(#nba-card:hover) .grid .card:not(#nba-card) {
+        body:has(.card:hover) .grid .card:not(:hover) {
             filter: blur(5px);
             opacity: 0.55;
         }
