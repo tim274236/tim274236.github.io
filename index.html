@@ -350,84 +350,37 @@
         }
 
         /* ══════════════════════════════════════════
-           NBA CARD — slow glass shimmer / glitter
-           A soft light spot drifts lazily across
-           the card surface like sunlight catching
-           a pane of glass at different angles.
+           NBA CARD — cinematic focus blur
+           Hovering the NBA card softly blurs every
+           other element on the page, pulling focus
+           to the card like a camera rack-focus.
+           Uses CSS :has() — no JS needed.
         ══════════════════════════════════════════ */
 
-        /* Shimmer layer sits above glass gloss, below text */
-        #nba-card .card-shimmer {
-            position: absolute;
-            inset: 0;
-            border-radius: 28px;
-            pointer-events: none;
-            z-index: 2;
-            overflow: hidden;
-            opacity: 0;
-            transition: opacity 1.2s ease;
+        /* Elements that should blur out when NBA card is hovered */
+        .bg,
+        .glass-blob,
+        .corner-ivey,
+        header,
+        .grid .card:not(#nba-card) {
+            transition: filter 0.5s ease, opacity 0.5s ease;
         }
 
-        #nba-card:hover .card-shimmer {
-            opacity: 1;
+        body:has(#nba-card:hover) .bg,
+        body:has(#nba-card:hover) .glass-blob,
+        body:has(#nba-card:hover) .corner-ivey {
+            filter: blur(10px);
+            opacity: 0.75;
         }
 
-        /* Primary glint — large, soft, slow */
-        #nba-card .card-shimmer::before {
-            content: '';
-            position: absolute;
-            width: 110px;
-            height: 110px;
-            border-radius: 50%;
-            background: radial-gradient(circle at 38% 35%,
-                rgba(255, 255, 255, 0.96)  0%,
-                rgba(210, 250, 230, 0.55) 28%,
-                rgba(180, 235, 255, 0.20) 55%,
-                transparent 72%
-            );
-            filter: blur(7px);
-            top: -55px;
-            left: -55px;
-            animation: glitter-drift 8s cubic-bezier(0.37, 0, 0.63, 1) infinite;
+        body:has(#nba-card:hover) header {
+            filter: blur(6px);
+            opacity: 0.6;
         }
 
-        /* Secondary glint — smaller, offset half-period so they never overlap */
-        #nba-card .card-shimmer::after {
-            content: '';
-            position: absolute;
-            width: 52px;
-            height: 52px;
-            border-radius: 50%;
-            background: radial-gradient(circle at 40% 30%,
-                rgba(255, 255, 255, 1.00)  0%,
-                rgba(200, 245, 220, 0.65) 35%,
-                transparent 68%
-            );
-            filter: blur(3px);
-            top: -26px;
-            left: -26px;
-            /* same path, delayed by half the duration */
-            animation: glitter-drift 8s cubic-bezier(0.37, 0, 0.63, 1) infinite;
-            animation-delay: -4s;
-        }
-
-        /*
-          Path: glints drift in a slow elliptical orbit
-          across the card surface — translate values are
-          relative to the top-left anchor of the element.
-          The overflow:hidden clip on .card-shimmer keeps
-          everything contained inside the rounded card.
-        */
-        @keyframes glitter-drift {
-            0%   { transform: translate( 50px,  30px); opacity: 0.0; }
-            8%   { opacity: 1.0; }
-            25%  { transform: translate(240px,  22px); opacity: 0.85; }
-            42%  { transform: translate(285px, 160px); opacity: 0.5; }
-            58%  { transform: translate(220px, 265px); opacity: 0.9; }
-            75%  { transform: translate( 55px, 248px); opacity: 0.6; }
-            88%  { transform: translate( 22px, 120px); opacity: 0.8; }
-            92%  { opacity: 0.0; }
-            100% { transform: translate( 50px,  30px); opacity: 0.0; }
+        body:has(#nba-card:hover) .grid .card:not(#nba-card) {
+            filter: blur(5px);
+            opacity: 0.55;
         }
 
         /* ══════════════════════════════════════════════════════
@@ -629,8 +582,6 @@
 
             <!-- NBA Shot Chart Explorer -->
             <a id="nba-card" class="card live" href="https://tim274236.github.io/Tim_NBA_stats_project/" target="_blank" rel="noopener">
-                <!-- Glass shimmer overlay — only active on hover -->
-                <span class="card-shimmer" aria-hidden="true"></span>
                 <div>
                     <div class="card-title">NBA Shot Chart Explorer</div>
                     <div class="card-desc">Interactive basketball shot chart analytics with player comparisons, team analysis, and hex-map visualizations.</div>
