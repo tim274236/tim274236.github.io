@@ -525,26 +525,34 @@
             mix-blend-mode: overlay;
         }
 
-        /* ── Drift: left-edge → center → right-edge → back ── */
+        /* ── Drift: unconstrained — roams freely beyond all edges ── */
         @keyframes blob-float {
             0%   {
-                transform: translate(calc(-50% - 400px), calc(-50% +  30px))
+                transform: translate(calc(-50% - 820px), calc(-50% + 120px))
                            rotate(  0deg) scale(1.00);
             }
-            22%  {
-                transform: translate(calc(-50% - 100px), calc(-50% -  80px))
-                           rotate( 12deg) scale(1.06);
+            18%  {
+                transform: translate(calc(-50% - 260px), calc(-50% - 340px))
+                           rotate( 18deg) scale(1.07);
             }
-            48%  {
-                transform: translate(calc(-50% + 200px), calc(-50% +  55px))
-                           rotate( -6deg) scale(0.94);
+            38%  {
+                transform: translate(calc(-50% + 180px), calc(-50% +  60px))
+                           rotate( -5deg) scale(0.93);
+            }
+            55%  {
+                transform: translate(calc(-50% + 700px), calc(-50% - 180px))
+                           rotate(-22deg) scale(1.04);
             }
             72%  {
-                transform: translate(calc(-50% + 360px), calc(-50% + 100px))
-                           rotate(-20deg) scale(1.03);
+                transform: translate(calc(-50% + 420px), calc(-50% + 420px))
+                           rotate(-14deg) scale(0.96);
+            }
+            88%  {
+                transform: translate(calc(-50% - 500px), calc(-50% + 280px))
+                           rotate( 10deg) scale(1.02);
             }
             100% {
-                transform: translate(calc(-50% - 400px), calc(-50% +  30px))
+                transform: translate(calc(-50% - 820px), calc(-50% + 120px))
                            rotate(  0deg) scale(1.00);
             }
         }
