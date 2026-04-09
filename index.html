@@ -332,6 +332,13 @@
             color: rgba(15,31,46,0.35);
         }
 
+        /* ── NBA card ripple — squiggle border on hover ── */
+        #nba-card:hover {
+            filter: url(#ripple-border);
+            /* keep the lift but let the SVG filter handle the edge distortion */
+            transform: translateY(-12px) scale(1.018);
+        }
+
         /* ── Responsive ── */
         @media (max-width: 768px) {
             .grid { grid-template-columns: repeat(2, 1fr); gap: 18px; }
@@ -351,6 +358,44 @@
     </style>
 </head>
 <body>
+
+    <!-- ═══ SVG filter: ripple / squiggle border effect for NBA card ═══ -->
+    <svg style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
+        <defs>
+            <filter id="ripple-border" x="-8%" y="-8%" width="116%" height="116%" color-interpolation-filters="linearRGB">
+                <!-- Animated turbulence drives the warp -->
+                <feTurbulence
+                    type="fractalNoise"
+                    baseFrequency="0.022 0.018"
+                    numOctaves="3"
+                    seed="4"
+                    result="turbulence">
+                    <!-- Frequency pulses in — creates the squiggle ripple wave -->
+                    <animate
+                        attributeName="baseFrequency"
+                        dur="0.72s"
+                        values="0.022 0.018; 0.038 0.032; 0.022 0.018"
+                        repeatCount="indefinite"
+                        calcMode="spline"
+                        keySplines="0.4 0 0.6 1; 0.4 0 0.6 1"/>
+                    <!-- Seed shift makes each wave look unique -->
+                    <animate
+                        attributeName="seed"
+                        dur="1.4s"
+                        values="4;12;4"
+                        repeatCount="indefinite"/>
+                </feTurbulence>
+                <!-- Displace edge pixels — higher scale = more squiggle -->
+                <feDisplacementMap
+                    in="SourceGraphic"
+                    in2="turbulence"
+                    scale="9"
+                    xChannelSelector="R"
+                    yChannelSelector="G"/>
+            </filter>
+        </defs>
+    </svg>
+
     <div class="bg"></div>
 
     <!-- Corner decorative images -->
@@ -366,7 +411,7 @@
         <div class="grid">
 
             <!-- NBA Shot Chart Explorer -->
-            <a class="card live" href="https://tim274236.github.io/Tim_NBA_stats_project/" target="_blank" rel="noopener">
+            <a id="nba-card" class="card live" href="https://tim274236.github.io/Tim_NBA_stats_project/" target="_blank" rel="noopener">
                 <div>
                     <div class="card-title">NBA Shot Chart Explorer</div>
                     <div class="card-desc">Interactive basketball shot chart analytics with player comparisons, team analysis, and hex-map visualizations.</div>
