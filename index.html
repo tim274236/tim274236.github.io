@@ -295,6 +295,23 @@
                 inset 0 1px 0 rgba(255,255,255,0.80);
         }
 
+        /* ── NBA card inner image ── */
+        .card-img-wrap {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex: 1;
+            padding: 8px 0;
+        }
+
+        .card-img-nba {
+            max-width: 78%;
+            max-height: 120px;
+            object-fit: contain;
+            display: block;
+            filter: drop-shadow(0 4px 16px rgba(0,0,0,0.12));
+        }
+
         /* ── Arrow ── */
         .arrow {
             position: absolute;
@@ -600,7 +617,6 @@
     </div>
 
     <!-- Corner decorative images -->
-    <img class="corner-img corner-nba" src="nba-glass.png" alt="">
     <img class="corner-img corner-ivey" src="ivey-glass.png" alt="">
 
     <div class="container">
@@ -618,6 +634,10 @@
                 <div>
                     <div class="card-title">NBA Shot Chart Explorer</div>
                     <div class="card-desc">Interactive basketball shot chart analytics with player comparisons, team analysis, and hex-map visualizations.</div>
+                </div>
+                <!-- Decorative image centered between title and Live tag -->
+                <div class="card-img-wrap">
+                    <img src="nba-glass2.png" alt="NBA glass" class="card-img-nba">
                 </div>
                 <div class="card-footer">
                     <span class="card-tag">Live</span>
