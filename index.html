@@ -48,15 +48,7 @@
             filter: drop-shadow(0 12px 40px rgba(255,100,30,0.18));
         }
 
-        .corner-ivey {
-            bottom: 0;
-            right: 0;
-            width: 280px;
-            opacity: 0.92;
-            filter: drop-shadow(0 -12px 40px rgba(30,140,255,0.18));
-        }
-
-        /* ── Layout ── */
+/* ── Layout ── */
         .container {
             position: relative;
             z-index: 3;
@@ -360,15 +352,13 @@
         /* Elements that blur out when any card is hovered */
         .bg,
         .glass-blob,
-        .corner-ivey,
         header,
         .grid .card {
             transition: filter 0.2s ease, opacity 0.2s ease;
         }
 
         body:has(.card:hover) .bg,
-        body:has(.card:hover) .glass-blob,
-        body:has(.card:hover) .corner-ivey {
+        body:has(.card:hover) .glass-blob {
             filter: blur(10px);
             opacity: 0.75;
         }
@@ -529,14 +519,14 @@
             .container { padding: 60px 20px 70px; }
             .card { padding: 26px; }
             .card-title { font-size: 1rem; }
-            .corner-nba, .corner-ivey { width: 170px; }
+            .corner-nba { width: 170px; }
         }
 
         @media (max-width: 480px) {
             .grid { grid-template-columns: 1fr; gap: 16px; }
             .card { aspect-ratio: auto; min-height: 185px; }
             header h1 { font-size: 1.75rem; }
-            .corner-nba, .corner-ivey { width: 120px; }
+            .corner-nba { width: 120px; }
         }
     </style>
 </head>
@@ -554,7 +544,6 @@
     </div>
 
     <!-- Corner decorative images -->
-    <img class="corner-img corner-ivey" src="ivey-glass.png" alt="">
 
     <div class="container">
         <header>
