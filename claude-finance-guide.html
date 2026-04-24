@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claude as Your Personal Finance Organizer — A Complete Guide</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
+
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --cream:        #FAF7F3;
+            --text:         #1C1915;
+            --text-muted:   rgba(28,25,21,0.48);
+            --orange:       #D9703A;
+            --orange-light: rgba(217,112,58,0.10);
+            --orange-mid:   rgba(217,112,58,0.20);
+            --blue:         #6AAECB;
+            --blue-light:   rgba(106,174,203,0.12);
+            --green:        #6BB59A;
+            --green-light:  rgba(107,181,154,0.12);
+            --glass:        rgba(255,255,255,0.70);
+            --glass-hi:     rgba(255,255,255,0.95);
+            --shadow-sm:    rgba(28,25,21,0.06);
+            --shadow-md:    rgba(28,25,21,0.10);
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            background: var(--cream);
+            color: var(--text);
+            font-family: 'DM Sans', -apple-system, sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* ── Subtle warm-tinted background ── */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 55% 45% at 15% 10%, rgba(217,112,58,0.07) 0%, transparent 60%),
+                radial-gradient(ellipse 50% 55% at 85% 85%, rgba(106,174,203,0.09) 0%, transparent 60%),
+                radial-gradient(ellipse 40% 40% at 65% 35%, rgba(107,181,154,0.06) 0%, transparent 55%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ── Back nav ── */
+        .nav-back {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 200;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.78rem;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+            color: var(--text-muted);
+            text-decoration: none;
+            background: rgba(255,255,255,0.82);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-hi);
+            border-radius: 40px;
+            padding: 8px 16px;
+            box-shadow: 0 2px 12px var(--shadow-sm);
+            transition: color 0.2s, transform 0.2s;
+        }
+        .nav-back:hover { color: var(--orange); transform: translateX(-2px); }
+
+        /* ── Step counter pill ── */
+        .step-counter {
+            position: fixed;
+            bottom: 28px;
+            right: 28px;
+            z-index: 200;
+            background: rgba(255,255,255,0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-hi);
+            border-radius: 40px;
+            padding: 9px 18px;
+            font-size: 0.76rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            box-shadow: 0 2px 12px var(--shadow-sm);
+        }
+        .step-counter strong { color: var(--orange); font-weight: 600; }
+
+        /* ── HERO ── */
+        .hero {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 100px 40px 80px;
+        }
+
+        .eyebrow {
+            display: inline-block;
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.13em;
+            text-transform: uppercase;
+            color: var(--orange);
+            background: var(--orange-light);
+            border: 1px solid rgba(217,112,58,0.22);
+            border-radius: 40px;
+            padding: 6px 16px;
+            margin-bottom: 28px;
+        }
+
+        .hero h1 {
+            font-family: 'DM Serif Display', Georgia, serif;
+            font-size: clamp(2.6rem, 5.5vw, 4.8rem);
+            line-height: 1.08;
+            letter-spacing: -0.025em;
+            color: var(--text);
+            max-width: 800px;
+            margin-bottom: 28px;
+        }
+
+        .hero h1 em {
+            font-style: italic;
+            color: var(--orange);
+        }
+
+        .hero-sub {
+            font-size: 1.05rem;
+            font-weight: 300;
+            color: var(--text-muted);
+            max-width: 500px;
+            line-height: 1.75;
+            margin-bottom: 56px;
+        }
+
+        .scroll-cue {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-muted);
+            font-size: 0.72rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            animation: cue-bounce 2.2s ease-in-out infinite;
+        }
+
+        .scroll-cue svg {
+            width: 18px;
+            height: 18px;
+            stroke: var(--orange);
+            stroke-width: 2;
+            stroke-linecap: round;
+            fill: none;
+        }
+
+        @keyframes cue-bounce {
+            0%, 100% { transform: translateY(0); opacity: 0.7; }
+            50%       { transform: translateY(7px); opacity: 1; }
+        }
+
+        /* ── SERPENTINE PROGRESS SVG ── */
+        #progress-wrap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            pointer-events: none;
+            z-index: 3;
+        }
+
+        #progress-svg { width: 100%; overflow: visible; }
+
+        #path-track {
+            fill: none;
+            stroke: rgba(28,25,21,0.07);
+            stroke-width: 2;
+            stroke-linecap: round;
+        }
+
+        #path-fill {
+            fill: none;
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke: url(#pg);
+            transition: stroke-dashoffset 0.05s linear;
+        }
+
+        #pdot {
+            fill: var(--orange);
+            filter: drop-shadow(0 0 5px rgba(217,112,58,0.55));
+            transition: opacity 0.3s;
+        }
+
+        /* ── STEPS CONTAINER ── */
+        #steps { position: relative; z-index: 1; }
+
+        .step {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 80px 40px;
+            position: relative;
+        }
+
+        /* Ghost large step number */
+        .step-ghost {
+            font-family: 'DM Serif Display', Georgia, serif;
+            font-size: 9rem;
+            font-weight: 400;
+            color: rgba(28,25,21,0.035);
+            line-height: 1;
+            position: absolute;
+            user-select: none;
+            pointer-events: none;
+        }
+
+        .step:nth-child(odd)  .step-ghost { left: 48px;  top: 50%; transform: translateY(-50%); }
+        .step:nth-child(even) .step-ghost { right: 48px; top: 50%; transform: translateY(-50%); }
+
+        /* Card */
+        .step-card {
+            max-width: 600px;
+            width: 100%;
+            background: var(--glass);
+            backdrop-filter: blur(28px) saturate(180%) brightness(1.06);
+            -webkit-backdrop-filter: blur(28px) saturate(180%) brightness(1.06);
+            border-radius: 24px;
+            padding: 44px 44px;
+            border-top:    1.5px solid var(--glass-hi);
+            border-left:   1.5px solid var(--glass-hi);
+            border-right:  1.5px solid rgba(255,255,255,0.38);
+            border-bottom: 1.5px solid rgba(255,255,255,0.28);
+            box-shadow:
+                0 1px 3px  var(--shadow-sm),
+                0 6px 18px var(--shadow-sm),
+                0 20px 44px rgba(28,25,21,0.06),
+                inset 0 2px 0 var(--glass-hi);
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity 0.65s cubic-bezier(0.22,1,0.36,1),
+                        transform 0.65s cubic-bezier(0.22,1,0.36,1);
+        }
+
+        /* Gloss band */
+        .step-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 24px;
+            background: linear-gradient(
+                170deg,
+                rgba(255,255,255,0.50) 0%,
+                rgba(255,255,255,0.10) 40%,
+                transparent 65%
+            );
+            pointer-events: none;
+        }
+
+        .step-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .step-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.68rem;
+            font-weight: 600;
+            letter-spacing: 0.11em;
+            text-transform: uppercase;
+            color: var(--orange);
+            background: var(--orange-light);
+            border: 1px solid rgba(217,112,58,0.22);
+            border-radius: 40px;
+            padding: 5px 12px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .step-card h2 {
+            font-family: 'DM Serif Display', Georgia, serif;
+            font-size: 2rem;
+            font-weight: 400;
+            line-height: 1.18;
+            letter-spacing: -0.015em;
+            color: var(--text);
+            margin-bottom: 18px;
+            position: relative;
+        }
+
+        .step-card p {
+            font-size: 0.97rem;
+            font-weight: 300;
+            line-height: 1.78;
+            color: rgba(28,25,21,0.62);
+            margin-bottom: 18px;
+            position: relative;
+        }
+
+        /* Prompt box */
+        .prompt-box {
+            background: var(--orange-light);
+            border: 1px solid rgba(217,112,58,0.18);
+            border-left: 3px solid var(--orange);
+            border-radius: 12px;
+            padding: 18px 20px;
+            margin-top: 20px;
+            position: relative;
+        }
+
+        .prompt-label {
+            font-size: 0.66rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--orange);
+            margin-bottom: 8px;
+        }
+
+        .prompt-box p {
+            font-size: 0.9rem;
+            font-style: italic;
+            color: rgba(28,25,21,0.72);
+            margin-bottom: 0;
+            line-height: 1.65;
+        }
+
+        /* Tips list */
+        .tips {
+            list-style: none;
+            margin-top: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+            position: relative;
+        }
+
+        .tips li {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 0.9rem;
+            font-weight: 300;
+            color: rgba(28,25,21,0.62);
+            line-height: 1.58;
+        }
+
+        .tips li::before {
+            content: '→';
+            color: var(--orange);
+            font-size: 0.8rem;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        /* Divider between card sections */
+        .card-divider {
+            height: 1px;
+            background: rgba(28,25,21,0.07);
+            margin: 20px 0;
+            position: relative;
+        }
+
+        /* ── COMPLETION ── */
+        .completion {
+            min-height: 65vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 80px 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .completion h2 {
+            font-family: 'DM Serif Display', Georgia, serif;
+            font-size: clamp(2rem, 4.5vw, 3.2rem);
+            letter-spacing: -0.02em;
+            color: var(--text);
+            margin-top: 20px;
+            margin-bottom: 18px;
+        }
+
+        .completion p {
+            font-size: 1rem;
+            font-weight: 300;
+            color: var(--text-muted);
+            max-width: 440px;
+            line-height: 1.75;
+            margin-bottom: 36px;
+        }
+
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--orange);
+            text-decoration: none;
+            padding: 13px 26px;
+            background: var(--orange-light);
+            border: 1px solid rgba(217,112,58,0.22);
+            border-radius: 40px;
+            transition: all 0.25s ease;
+        }
+
+        .btn-back:hover {
+            background: var(--orange);
+            color: #fff;
+            border-color: var(--orange);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(217,112,58,0.28);
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 768px) {
+            .step { padding: 60px 20px; }
+            .step-card { padding: 28px 24px; }
+            .step-ghost { display: none; }
+            #progress-wrap { display: none; }
+            .step-counter { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<a class="nav-back" href="index.html">← Back to projects</a>
+
+<div class="step-counter">Step <strong id="cur">0</strong> / 10</div>
+
+<!-- Hero -->
+<section class="hero">
+    <div class="eyebrow">Complete Guide &middot; 10 Steps</div>
+    <h1>Use Claude as Your<br><em>Personal Finance</em> Organizer</h1>
+    <p class="hero-sub">A practical, step-by-step guide to turning Claude into your personal CFO — from first login to automated monthly reviews.</p>
+    <div class="scroll-cue">
+        <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+        Scroll to begin
+    </div>
+</section>
+
+<!-- Serpentine SVG (absolutely positioned, height set by JS) -->
+<div id="progress-wrap">
+    <svg id="progress-svg">
+        <defs>
+            <linearGradient id="pg" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%"   stop-color="#D9703A"/>
+                <stop offset="50%"  stop-color="#6AAECB"/>
+                <stop offset="100%" stop-color="#6BB59A"/>
+            </linearGradient>
+        </defs>
+        <path id="path-track" d=""/>
+        <path id="path-fill"  d=""/>
+        <circle id="pdot" r="5" cx="0" cy="0" opacity="0"/>
+    </svg>
+</div>
+
+<!-- Steps -->
+<div id="steps">
+
+    <section class="step" data-step="1">
+        <div class="step-ghost">01</div>
+        <div class="step-card">
+            <div class="step-tag">Step 1 &middot; Foundation</div>
+            <h2>Get Access to Claude</h2>
+            <p>Visit claude.ai and create a free account. The free tier works well to get started. Claude Pro unlocks longer context windows — ideal when you're pasting months of bank transactions — plus file uploads for CSVs and PDFs.</p>
+            <ul class="tips">
+                <li>Claude Pro is worth it once you're uploading real financial files</li>
+                <li>Create a dedicated Project for your finances to preserve context</li>
+                <li>Use a private browser tab if you share your device</li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="step" data-step="2">
+        <div class="step-ghost">02</div>
+        <div class="step-card">
+            <div class="step-tag">Step 2 &middot; Goals</div>
+            <h2>Define Your Financial Goals</h2>
+            <p>Tell Claude exactly where you want to be financially — in 3 months, 1 year, and 5 years. The more specific you are, the more targeted Claude's guidance will be. This context becomes the north star for every future conversation.</p>
+            <div class="prompt-box">
+                <div class="prompt-label">Try this prompt</div>
+                <p>"My financial goals: pay off $8,000 in credit card debt in 18 months, build a 3-month emergency fund of $12,000, and invest $400/month. Help me create a priority order and a realistic timeline."</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="step" data-step="3">
+        <div class="step-ghost">03</div>
+        <div class="step-card">
+            <div class="step-tag">Step 3 &middot; Data</div>
+            <h2>Import Your Financial Data</h2>
+            <p>Export your last 3 months of bank and credit card statements as CSV files. Paste them directly into Claude or upload the files. Claude reads and parses raw transaction data without any prior formatting — just paste and ask.</p>
+            <ul class="tips">
+                <li>Most banks offer CSV export under "Download Transactions"</li>
+                <li>Include all accounts: checking, savings, and credit cards</li>
+                <li>Don't clean the data first — Claude handles messy exports well</li>
+                <li>Anonymize account numbers if you prefer extra privacy</li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="step" data-step="4">
+        <div class="step-ghost">04</div>
+        <div class="step-card">
+            <div class="step-tag">Step 4 &middot; Budget</div>
+            <h2>Build Your Monthly Budget</h2>
+            <p>With your transaction data loaded, ask Claude to categorize your spending and build a budget based on your actual habits — not a generic template. Claude will separate fixed costs from variable spending and surface where money is quietly leaking.</p>
+            <div class="prompt-box">
+                <div class="prompt-label">Try this prompt</div>
+                <p>"Based on my transactions, categorize my spending into fixed costs, variable necessities, and discretionary. Then suggest a realistic monthly budget that moves me toward my goals."</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="step" data-step="5">
+        <div class="step-ghost">05</div>
+        <div class="step-card">
+            <div class="step-tag">Step 5 &middot; Tracking</div>
+            <h2>Track Daily Expenses</h2>
+            <p>Build a weekly rhythm of pasting new transactions into Claude and asking for a running budget update. Claude flags categories trending over budget before the month ends — giving you time to adjust rather than just reporting damage after the fact.</p>
+            <ul class="tips">
+                <li>Set a 10-minute "finance check-in" every Sunday evening</li>
+                <li>Ask Claude to highlight unusual or one-off charges</li>
+                <li>Ask Claude to surface forgotten subscriptions each month</li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="step" data-step="6">
+        <div class="step-ghost">06</div>
+        <div class="step-card">
+            <div class="step-tag">Step 6 &middot; Analysis</div>
+            <h2>Analyze Spending Patterns</h2>
+            <p>After 2–3 months of data, Claude can surface patterns you'd never catch manually — which days you tend to overspend, which categories creep up mid-month, and where small purchases are quietly eroding your budget over time.</p>
+            <div class="prompt-box">
+                <div class="prompt-label">Try this prompt</div>
+                <p>"Look at my last 3 months of spending. What are my top 3 problem areas? Are there any recurring patterns in when or why I overspend? What single habit change would have the biggest impact?"</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="step" data-step="7">
+        <div class="step-ghost">07</div>
+        <div class="step-card">
+            <div class="step-tag">Step 7 &middot; Savings</div>
+            <h2>Create a Savings Plan</h2>
+            <p>Claude builds a savings strategy around your actual income cycle — bi-weekly paychecks, freelance payments, or irregular cash flow. It models multiple savings rates and shows exactly how long each goal takes to reach under each scenario.</p>
+            <ul class="tips">
+                <li>Ask Claude to model conservative, moderate, and aggressive scenarios</li>
+                <li>Set up named "buckets" for each savings goal (emergency, travel, etc.)</li>
+                <li>Schedule automatic transfers the day after payday to remove temptation</li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="step" data-step="8">
+        <div class="step-ghost">08</div>
+        <div class="step-card">
+            <div class="step-tag">Step 8 &middot; Debt</div>
+            <h2>Manage Debt Strategically</h2>
+            <p>Claude calculates exact payoff timelines for the avalanche method (highest interest first) vs snowball method (smallest balance first), and can find a hybrid that maximizes both mathematical savings and psychological momentum.</p>
+            <div class="prompt-box">
+                <div class="prompt-label">Try this prompt</div>
+                <p>"I have: Visa $4,200 at 22% APR, student loan $18,000 at 5.5%, car loan $9,500 at 7.9%. I can put $800/month toward debt. Show me avalanche vs snowball with exact payoff dates and total interest paid."</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="step" data-step="9">
+        <div class="step-ghost">09</div>
+        <div class="step-card">
+            <div class="step-tag">Step 9 &middot; Investing</div>
+            <h2>Get Investment Guidance</h2>
+            <p>Once your budget produces a consistent surplus, Claude explains investment vehicles in plain language matched to your situation — index funds, ETFs, tax-advantaged accounts (TFSA/RRSP in Canada, 401k/IRA in the US) — and compares specific funds by cost and structure.</p>
+            <ul class="tips">
+                <li>Always max tax-advantaged accounts before taxable investing</li>
+                <li>Ask Claude to explain any term before you commit to a product</li>
+                <li>Use Claude to compare funds by MER or expense ratio side-by-side</li>
+                <li>Ask about your country-specific rules — Claude knows both US and CA tax law</li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="step" data-step="10">
+        <div class="step-ghost">10</div>
+        <div class="step-card">
+            <div class="step-tag">Step 10 &middot; Automate</div>
+            <h2>Run Your Monthly Review</h2>
+            <p>The final step is turning this into a rhythm. At the start of each month, open Claude and run your review. Paste last month's transactions, compare to your budget, update your goals, and set three intentions for the month ahead. Twenty minutes. Total clarity.</p>
+            <div class="prompt-box">
+                <div class="prompt-label">Your monthly ritual prompt</div>
+                <p>"Here are my transactions for [month]. Compare to my budget, calculate my savings rate, update my debt payoff timeline, and give me my three financial priorities for next month."</p>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<!-- Completion -->
+<section class="completion">
+    <div class="eyebrow" style="margin-bottom: 0">You made it</div>
+    <h2>Your Financial Future<br>Starts Now</h2>
+    <p>You have everything you need to turn Claude into a powerful, personal finance system. Start with Step 1 — it takes under five minutes.</p>
+    <a class="btn-back" href="index.html">← Back to all projects</a>
+</section>
+
+<script>
+// ─────────────────────────────────────────────
+//  SERPENTINE PROGRESS LINE
+//  The SVG path snakes: left side ↓ → curve →
+//  right side ↓ → curve → left side…
+//  Scroll drives stroke-dashoffset.
+// ─────────────────────────────────────────────
+
+const MARGIN   = 44;   // px from viewport edge
+const CURVE_H  = 72;   // px for the crossover arc height
+
+const stepsWrap  = document.getElementById('steps');
+const svgWrap    = document.getElementById('progress-wrap');
+const svgEl      = document.getElementById('progress-svg');
+const pathTrack  = document.getElementById('path-track');
+const pathFill   = document.getElementById('path-fill');
+const dot        = document.getElementById('pdot');
+const curEl      = document.getElementById('cur');
+const stepEls    = document.querySelectorAll('.step');
+const cards      = document.querySelectorAll('.step-card');
+
+let totalLen = 0;
+
+function buildPath() {
+    const W  = window.innerWidth;
+    const stepsTop = stepsWrap.offsetTop;
+    const sectionH = Array.from(stepEls).map(s => s.offsetHeight);
+    const totalH   = sectionH.reduce((a, b) => a + b, 0);
+
+    // Position wrapper
+    svgWrap.style.top    = stepsTop + 'px';
+    svgWrap.style.height = (totalH + 120) + 'px';
+    svgEl.setAttribute('width',   W);
+    svgEl.setAttribute('height',  totalH + 120);
+    svgEl.setAttribute('viewBox', `0 0 ${W} ${totalH + 120}`);
+
+    let d = '';
+    let y = 0;
+
+    sectionH.forEach((h, i) => {
+        const isLeft = (i % 2 === 0);
+        const xA = isLeft ? MARGIN : W - MARGIN; // starting side
+        const xB = isLeft ? W - MARGIN : MARGIN; // ending side
+
+        if (i === 0) d += `M ${xA} 0`;
+
+        // Straight down through section (leave room for curve at bottom)
+        const lineEnd = y + h - CURVE_H;
+        d += ` L ${xA} ${lineEnd}`;
+
+        // Crossover cubic bezier to opposite side
+        if (i < sectionH.length - 1) {
+            const cp1y = lineEnd + CURVE_H * 0.55;
+            const cp2y = y + h + CURVE_H * 0.45;
+            d += ` C ${xA} ${cp1y}, ${xB} ${cp2y}, ${xB} ${y + h + CURVE_H}`;
+        } else {
+            d += ` L ${xA} ${y + h}`;
+        }
+
+        y += h;
+    });
+
+    pathTrack.setAttribute('d', d);
+    pathFill.setAttribute('d', d);
+
+    totalLen = pathFill.getTotalLength();
+    pathFill.style.strokeDasharray  = totalLen;
+    pathFill.style.strokeDashoffset = totalLen;
+}
+
+function onScroll() {
+    const scrollY   = window.scrollY;
+    const stepsTop  = stepsWrap.offsetTop;
+    const stepsH    = stepsWrap.offsetHeight;
+    const trigger   = scrollY + window.innerHeight * 0.55;
+
+    // Overall progress 0→1 through the steps block
+    const raw      = (trigger - stepsTop) / stepsH;
+    const progress = Math.max(0, Math.min(1, raw));
+
+    const filled = totalLen * progress;
+    pathFill.style.strokeDashoffset = totalLen - filled;
+
+    // Move dot
+    if (totalLen > 0 && progress > 0 && progress < 1) {
+        const pt = pathFill.getPointAtLength(Math.min(filled, totalLen - 1));
+        dot.setAttribute('cx', pt.x);
+        dot.setAttribute('cy', pt.y);
+        dot.setAttribute('opacity', '1');
+    } else {
+        dot.setAttribute('opacity', '0');
+    }
+
+    // Active step counter
+    let active = 0;
+    stepEls.forEach((s, i) => {
+        const top = s.getBoundingClientRect().top;
+        if (top < window.innerHeight * 0.52) active = i + 1;
+    });
+    curEl.textContent = active;
+
+    // Reveal cards on scroll
+    cards.forEach(c => {
+        if (c.getBoundingClientRect().top < window.innerHeight * 0.82) {
+            c.classList.add('visible');
+        }
+    });
+}
+
+window.addEventListener('load', () => { buildPath(); onScroll(); });
+window.addEventListener('scroll', onScroll, { passive: true });
+window.addEventListener('resize', () => { buildPath(); onScroll(); });
+</script>
+
+</body>
+</html>
