@@ -367,6 +367,30 @@
             margin-top: 2px;
         }
 
+        .excel-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
+            padding: 11px 20px;
+            background: #1D6F42;
+            color: #fff;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(29,111,66,0.25);
+            transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+        }
+        .excel-btn:hover {
+            background: #175c36;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 14px rgba(29,111,66,0.35);
+        }
+        .excel-btn:active { transform: translateY(0); }
+
         /* Divider between card sections */
         .card-divider {
             height: 1px;
@@ -546,6 +570,16 @@
                     <li>Create a separate file for each card you want to track finances for</li>
                     <li>Save your Excel template into the Claude folder</li>
                 </ul>
+                <button class="excel-btn" onclick="return false;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="24" height="24" rx="4" fill="#1D6F42"/>
+                        <path d="M13 3H7C5.9 3 5 3.9 5 5v14c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V9l-6-6z" fill="#1D6F42"/>
+                        <path d="M13 3v6h6" fill="none" stroke="#ffffff" stroke-width="1.2" stroke-linejoin="round"/>
+                        <path d="M13 3H7C5.9 3 5 3.9 5 5v14c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V9l-6-6z" stroke="#ffffff" stroke-width="1.2" stroke-linejoin="round" fill="none"/>
+                        <text x="7.5" y="19" font-family="Arial" font-weight="bold" font-size="7" fill="white">XLS</text>
+                    </svg>
+                    Download Excel Template
+                </button>
             </div>
         </div>
     </section>
