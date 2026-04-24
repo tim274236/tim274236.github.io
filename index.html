@@ -349,29 +349,6 @@
            Uses CSS :has() — no JS needed.
         ══════════════════════════════════════════ */
 
-        /* Elements that blur out when any card is hovered */
-        .bg,
-        .glass-blob,
-        header,
-        .grid .card {
-            transition: filter 0.2s ease, opacity 0.2s ease;
-        }
-
-        body:has(.card:hover) .bg,
-        body:has(.card:hover) .glass-blob {
-            filter: blur(10px);
-            opacity: 0.75;
-        }
-
-        body:has(.card:hover) header {
-            filter: blur(6px);
-            opacity: 0.6;
-        }
-
-        body:has(.card:hover) .grid .card:not(:hover) {
-            filter: blur(5px);
-            opacity: 0.55;
-        }
 
         /* ══════════════════════════════════════════════════════
            LIQUID GLASS BLOB
