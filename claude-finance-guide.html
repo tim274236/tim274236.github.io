@@ -741,29 +741,27 @@ function buildPath() {
     const stepsTop = stepsWrap.offsetTop;
     const sectionH = Array.from(stepEls).map(s => s.offsetHeight);
     const totalH   = sectionH.reduce((a, b) => a + b, 0);
+    const svgH     = stepsTop + totalH + 120;
 
-    // Position wrapper
-    svgWrap.style.top    = stepsTop + 'px';
-    svgWrap.style.height = (totalH + 120) + 'px';
+    // Pin wrapper to top of page so path starts at y=0
+    svgWrap.style.top    = '0px';
+    svgWrap.style.height = svgH + 'px';
     svgEl.setAttribute('width',   W);
-    svgEl.setAttribute('height',  totalH + 120);
-    svgEl.setAttribute('viewBox', `0 0 ${W} ${totalH + 120}`);
+    svgEl.setAttribute('height',  svgH);
+    svgEl.setAttribute('viewBox', `0 0 ${W} ${svgH}`);
 
-    let d = '';
-    let y = 0;
+    // Start at top-left, run straight down to where steps begin
+    let d = `M ${MARGIN} 0 L ${MARGIN} ${stepsTop}`;
+    let y = stepsTop;
 
     sectionH.forEach((h, i) => {
         const isLeft = (i % 2 === 0);
-        const xA = isLeft ? MARGIN : W - MARGIN; // starting side
-        const xB = isLeft ? W - MARGIN : MARGIN; // ending side
+        const xA = isLeft ? MARGIN : W - MARGIN;
+        const xB = isLeft ? W - MARGIN : MARGIN;
 
-        if (i === 0) d += `M ${xA} 0`;
-
-        // Straight down through section (leave room for curve at bottom)
         const lineEnd = y + h - CURVE_H;
         d += ` L ${xA} ${lineEnd}`;
 
-        // Crossover cubic bezier to opposite side
         if (i < sectionH.length - 1) {
             const cp1y = lineEnd + CURVE_H * 0.55;
             const cp2y = y + h + CURVE_H * 0.45;
@@ -789,8 +787,8 @@ function onScroll() {
     const stepsH    = stepsWrap.offsetHeight;
     const trigger   = scrollY + window.innerHeight * 0.55;
 
-    // Overall progress 0→1 through the steps block
-    const raw      = (trigger - stepsTop) / stepsH;
+    // Overall progress 0→1 from top of page through end of steps
+    const raw      = trigger / (stepsTop + stepsH);
     const progress = Math.max(0, Math.min(1, raw));
 
     const filled = totalLen * progress;
