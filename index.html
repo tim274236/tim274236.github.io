@@ -294,6 +294,12 @@
                 inset 0 1px 0 rgba(255,255,255,0.80);
         }
 
+        /* ── Inactive card — temporarily disabled link ── */
+        .card.live.inactive {
+            pointer-events: none;
+            cursor: default;
+        }
+
         /* ── NBA card inner image ── */
         .card-img-wrap {
             display: flex;
@@ -554,7 +560,7 @@
             </a>
 
             <!-- NBA Playoffs Bracket Picker -->
-            <a class="card live" href="https://tim274236.github.io/NBA_Playoff_Predictor/" target="_blank" rel="noopener">
+            <a class="card live inactive" href="#" target="_blank" rel="noopener">
                 <div>
                     <div class="card-title">NBA Playoffs Bracket Picker</div>
                     <div class="card-desc">Pick and predict your NBA playoff bracket — track results, compare predictions, and follow the postseason race.</div>
