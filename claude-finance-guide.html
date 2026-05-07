@@ -572,6 +572,28 @@
         box-shadow: 0 20px 60px rgba(28,25,21,0.22);
         z-index: 100;
     }
+    /* Stacked layout — images full-width above card */
+    .step-stacked {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 28px;
+        width: 100%;
+        max-width: 860px;
+    }
+    .step-stacked .step-shots {
+        width: 100%;
+        flex-direction: row;
+        gap: 16px;
+    }
+    .step-stacked .step-shots img {
+        width: 100%;
+        flex: 1;
+    }
+    .step-stacked .step-card {
+        width: 100%;
+    }
+
     @media (max-width: 860px) {
         .step-with-shots { flex-direction: column; }
         .step-shots { width: 100%; flex-direction: row; flex-wrap: wrap; }
@@ -673,7 +695,11 @@
 
     <section class="step" data-step="3">
         <div class="step-ghost">03</div>
-        <div class="step-with-shots">
+        <div class="step-stacked">
+            <div class="step-shots">
+                <img src="Step 3-1.png" alt="Step 3 screenshot 1">
+                <img src="Step 3-2.png" alt="Step 3 screenshot 2">
+            </div>
             <div class="step-card">
                 <div class="step-tag">Step 3 &middot; Data</div>
                 <h2>Download &amp; Redact Your Bank Statements</h2>
@@ -685,10 +711,6 @@
                     <li>Manually redact sensitive details — account numbers, sort codes, personal addresses</li>
                 </ul>
                 <label class="step-check"><input type="checkbox"><span class="step-check-box"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="step-check-label">Mark complete</span></label>
-            </div>
-            <div class="step-shots">
-                <img src="Step 3-1.png" alt="Step 3 screenshot 1">
-                <img src="Step 3-2.png" alt="Step 3 screenshot 2">
             </div>
         </div>
     </section>
