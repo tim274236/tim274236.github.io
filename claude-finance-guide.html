@@ -28,12 +28,6 @@
             --shadow-md:    rgba(28,25,21,0.10);
         }
 
-        @property --fill {
-            syntax: '<percentage>';
-            inherits: false;
-            initial-value: 0%;
-        }
-
         html { scroll-behavior: smooth; }
 
         body {
@@ -226,22 +220,58 @@
             font-family: 'DM Serif Display', Georgia, serif;
             font-size: 9rem;
             font-weight: 400;
+            color: rgba(28,25,21,0.055);
             line-height: 1;
             position: absolute;
             user-select: none;
             pointer-events: none;
-            /* gradient fill trick: filled color on top, ghost on bottom */
-            background: linear-gradient(
-                to bottom,
-                #D9703A 0%,
-                #D9703A var(--fill, 0%),
-                rgba(28,25,21,0.055) var(--fill, 0%),
-                rgba(28,25,21,0.055) 100%
-            );
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            transition: --fill 0.1s linear;
+            transition: color 0.5s ease;
+        }
+
+        .step.completed .step-ghost {
+            color: #D9703A;
+        }
+
+        /* ── Step complete checkbox ── */
+        .step-check {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 24px;
+            cursor: pointer;
+            width: fit-content;
+        }
+        .step-check input[type="checkbox"] { display: none; }
+        .step-check-box {
+            width: 22px;
+            height: 22px;
+            border-radius: 6px;
+            border: 2px solid rgba(28,25,21,0.18);
+            background: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: border-color 0.25s, background 0.25s;
+            flex-shrink: 0;
+        }
+        .step-check-box svg {
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        .step-check input:checked ~ .step-check-box {
+            border-color: #D9703A;
+            background: #D9703A;
+        }
+        .step-check input:checked ~ .step-check-box svg { opacity: 1; }
+        .step-check-label {
+            font-size: 0.85rem;
+            color: rgba(28,25,21,0.45);
+            font-weight: 500;
+            letter-spacing: 0.03em;
+            transition: color 0.25s;
+        }
+        .step-check input:checked ~ .step-check-label {
+            color: #D9703A;
         }
 
         .step:nth-child(odd)  .step-ghost { left: 62px;  top: 50%; transform: translateY(-50%); }
@@ -566,6 +596,7 @@
                 <li>Finish Claude setup and log in</li>
                 <li>Open Claude Co-work — must have Claude Pro to access</li>
             </ul>
+            <label class="step-check"><input type="checkbox"><span class="step-check-box"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="step-check-label">Mark complete</span></label>
         </div>
     </section>
 
@@ -587,6 +618,7 @@
                     <li>Create a separate file for each card you want to track finances for</li>
                     <li>Save your Excel template into the Claude folder</li>
                 </ul>
+                <label class="step-check"><input type="checkbox"><span class="step-check-box"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="step-check-label">Mark complete</span></label>
                 <button class="excel-btn" onclick="return false;">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <rect width="24" height="24" rx="4" fill="#1D6F42"/>
@@ -614,6 +646,7 @@
                     <li>Use the <strong>Markup</strong> toolbar and select the <strong>Redact</strong> tool</li>
                     <li>Manually redact sensitive details — account numbers, sort codes, personal addresses</li>
                 </ul>
+                <label class="step-check"><input type="checkbox"><span class="step-check-box"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="step-check-label">Mark complete</span></label>
             </div>
             <div class="step-shots">
                 <img src="Step 3-1.png" alt="Step 3 screenshot 1">
@@ -631,6 +664,7 @@
             <ul class="tips">
                 <li>Save each redacted PDF to the Claude folder in its respective credit card folder</li>
             </ul>
+            <label class="step-check"><input type="checkbox"><span class="step-check-box"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="step-check-label">Mark complete</span></label>
             <div class="prompt-box">
                 <div class="prompt-label">Try this prompt</div>
                 <p>"Based on my transactions, categorize my spending into fixed costs, variable necessities, and discretionary. Then suggest a realistic monthly budget that moves me toward my goals."</p>
@@ -649,6 +683,7 @@
                 <li>Ask Claude to highlight unusual or one-off charges</li>
                 <li>Ask Claude to surface forgotten subscriptions each month</li>
             </ul>
+            <label class="step-check"><input type="checkbox"><span class="step-check-box"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="step-check-label">Mark complete</span></label>
         </div>
     </section>
 
@@ -662,6 +697,7 @@
                 <div class="prompt-label">Try this prompt</div>
                 <p>"Look at my last 3 months of spending. What are my top 3 problem areas? Are there any recurring patterns in when or why I overspend? What single habit change would have the biggest impact?"</p>
             </div>
+            <label class="step-check"><input type="checkbox"><span class="step-check-box"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="step-check-label">Mark complete</span></label>
         </div>
     </section>
 
@@ -676,6 +712,7 @@
                 <li>Set up named "buckets" for each savings goal (emergency, travel, etc.)</li>
                 <li>Schedule automatic transfers the day after payday to remove temptation</li>
             </ul>
+            <label class="step-check"><input type="checkbox"><span class="step-check-box"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="step-check-label">Mark complete</span></label>
         </div>
     </section>
 
@@ -689,6 +726,7 @@
                 <div class="prompt-label">Try this prompt</div>
                 <p>"I have: Visa $4,200 at 22% APR, student loan $18,000 at 5.5%, car loan $9,500 at 7.9%. I can put $800/month toward debt. Show me avalanche vs snowball with exact payoff dates and total interest paid."</p>
             </div>
+            <label class="step-check"><input type="checkbox"><span class="step-check-box"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="step-check-label">Mark complete</span></label>
         </div>
     </section>
 
@@ -704,6 +742,7 @@
                 <li>Use Claude to compare funds by MER or expense ratio side-by-side</li>
                 <li>Ask about your country-specific rules — Claude knows both US and CA tax law</li>
             </ul>
+            <label class="step-check"><input type="checkbox"><span class="step-check-box"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="step-check-label">Mark complete</span></label>
         </div>
     </section>
 
@@ -717,6 +756,7 @@
                 <div class="prompt-label">Your monthly ritual prompt</div>
                 <p>"Here are my transactions for [month]. Compare to my budget, calculate my savings rate, update my debt payoff timeline, and give me my three financial priorities for next month."</p>
             </div>
+            <label class="step-check"><input type="checkbox"><span class="step-check-box"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="step-check-label">Mark complete</span></label>
         </div>
     </section>
 
@@ -822,23 +862,11 @@ function onScroll() {
         dot.setAttribute('opacity', '0');
     }
 
-    // Active step counter + fill ghost numbers
+    // Active step counter
     let active = 0;
     stepEls.forEach((s, i) => {
         const top = s.getBoundingClientRect().top;
         if (top < window.innerHeight * 0.52) active = i + 1;
-
-        // Drive --fill on the ghost number for this step
-        const ghost = s.querySelector('.step-ghost');
-        if (ghost) {
-            const rect = s.getBoundingClientRect();
-            // How far the tracker (mid-viewport) has swept through this step
-            const trackerY = scrollY + window.innerHeight * 0.52;
-            const stepTop  = scrollY + rect.top;
-            const stepBot  = stepTop + s.offsetHeight;
-            const pct = Math.max(0, Math.min(1, (trackerY - stepTop) / (stepBot - stepTop)));
-            ghost.style.setProperty('--fill', (pct * 100).toFixed(1) + '%');
-        }
     });
     curEl.textContent = active;
 
@@ -853,6 +881,13 @@ function onScroll() {
 window.addEventListener('load', () => { buildPath(); onScroll(); });
 window.addEventListener('scroll', onScroll, { passive: true });
 window.addEventListener('resize', () => { buildPath(); onScroll(); });
+
+// Checkbox → fill ghost number
+document.querySelectorAll('.step-check input[type="checkbox"]').forEach(cb => {
+    cb.addEventListener('change', () => {
+        cb.closest('.step').classList.toggle('completed', cb.checked);
+    });
+});
 </script>
 
 </body>
