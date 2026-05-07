@@ -787,9 +787,10 @@ function onScroll() {
     const stepsH    = stepsWrap.offsetHeight;
     const trigger   = scrollY + window.innerHeight * 0.55;
 
-    // Overall progress 0→1 from top of page through end of steps
-    const raw      = scrollY / (stepsTop + stepsH);
-    const progress = Math.max(0, Math.min(1, raw));
+    // Overall progress 0→1: from page top until the bottom of steps reaches the viewport bottom
+    const scrollEnd = stepsTop + stepsH - window.innerHeight;
+    const raw       = scrollY / Math.max(scrollEnd, 1);
+    const progress  = Math.max(0, Math.min(1, raw));
 
     const filled = totalLen * progress;
     pathFill.style.strokeDashoffset = totalLen - filled;
