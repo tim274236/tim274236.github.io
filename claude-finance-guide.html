@@ -446,6 +446,37 @@
             position: relative;
         }
 
+        /* ── COMPLETION EYEBROW PILL ── */
+        .completion-badge {
+            display: inline-block;
+            font-size: calc(0.72rem * 3);
+            font-weight: 600;
+            letter-spacing: 0.13em;
+            text-transform: uppercase;
+            color: #aaa;
+            background: rgba(170,170,170,0.12);
+            border: 1px solid rgba(170,170,170,0.3);
+            border-radius: 40px;
+            padding: calc(6px * 3) calc(16px * 3);
+            margin-bottom: 28px;
+            position: relative;
+            top: -20px;
+            transition: color 0.5s ease, background 0.5s ease, border-color 0.5s ease;
+        }
+        .completion-badge.all-done {
+            color: var(--orange);
+            background: var(--orange-light);
+            border-color: rgba(217,112,58,0.22);
+        }
+        @keyframes badge-bounce {
+            0%,100% { transform: translateY(0); }
+            30%      { transform: translateY(-18px); }
+            60%      { transform: translateY(-8px); }
+        }
+        .completion-badge.bouncing {
+            animation: badge-bounce 0.5s ease 3;
+        }
+
         /* ── COMPLETION ── */
         .completion {
             min-height: 65vh;
@@ -765,7 +796,7 @@
 
 <!-- Completion -->
 <section class="completion">
-    <div class="eyebrow" style="margin-bottom: 0">You made it</div>
+    <div class="completion-badge" id="completion-badge">You made it</div>
     <h2>Your Financial Future<br>Starts Now</h2>
     <p>You have everything you need to turn Claude into a powerful, personal finance system. Start with Step 1.</p>
     <a class="btn-back" href="index.html">← Back to all projects</a>
@@ -883,10 +914,29 @@ window.addEventListener('load', () => { buildPath(); onScroll(); });
 window.addEventListener('scroll', onScroll, { passive: true });
 window.addEventListener('resize', () => { buildPath(); onScroll(); });
 
-// Checkbox → fill ghost number
-document.querySelectorAll('.step-check input[type="checkbox"]').forEach(cb => {
+// Checkbox → fill ghost number + completion badge
+const badge = document.getElementById('completion-badge');
+const allCheckboxes = document.querySelectorAll('.step-check input[type="checkbox"]');
+
+function checkAllDone() {
+    const allDone = Array.from(allCheckboxes).every(c => c.checked);
+    if (allDone) {
+        badge.classList.add('all-done');
+        setTimeout(() => {
+            badge.classList.add('bouncing');
+            badge.addEventListener('animationend', () => {
+                badge.classList.remove('bouncing');
+            }, { once: true });
+        }, 3000);
+    } else {
+        badge.classList.remove('all-done', 'bouncing');
+    }
+}
+
+allCheckboxes.forEach(cb => {
     cb.addEventListener('change', () => {
         cb.closest('.step').classList.toggle('completed', cb.checked);
+        checkAllDone();
     });
 });
 </script>
