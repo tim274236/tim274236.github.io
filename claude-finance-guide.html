@@ -666,6 +666,14 @@
     .preview-card svg {
         opacity: 0.35;
     }
+    .preview-sample-note {
+        margin-top: 14px;
+        font-size: 0.82rem;
+        font-weight: 500;
+        color: var(--text-muted);
+        letter-spacing: 0.03em;
+        font-style: italic;
+    }
     @media (max-width: 700px) {
         .preview-grid { grid-template-columns: 1fr; }
     }
@@ -694,14 +702,10 @@
     <h2 class="preview-heading">Your finished Excel tracker</h2>
     <div class="preview-grid">
         <div class="preview-card">
-            <!-- Replace src with your screenshot: <img src="preview-1.png" alt="Preview 1"> -->
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="3" stroke="#D9703A" stroke-width="1.5"/><path d="M3 9h18M9 9v12" stroke="#D9703A" stroke-width="1.5"/></svg>
-            Screenshot coming soon
+            <img src="Sample_Image_1.png" alt="Sample Image 1">
         </div>
         <div class="preview-card">
-            <!-- Replace src with your screenshot: <img src="preview-2.png" alt="Preview 2"> -->
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="3" stroke="#D9703A" stroke-width="1.5"/><path d="M3 9h18M9 9v12" stroke="#D9703A" stroke-width="1.5"/></svg>
-            Screenshot coming soon
+            <img src="Sample_image_2.png" alt="Sample Image 2">
         </div>
         <div class="preview-card">
             <!-- Replace src with your screenshot: <img src="preview-3.png" alt="Preview 3"> -->
@@ -709,6 +713,7 @@
             Screenshot coming soon
         </div>
     </div>
+    <p class="preview-sample-note">These are just sample values</p>
 </section>
 
 <!-- Serpentine SVG (absolutely positioned, height set by JS) -->
